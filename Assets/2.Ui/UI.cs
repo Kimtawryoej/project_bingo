@@ -8,8 +8,7 @@ public class UI : SingleTone<UI>, I_ObseverManager
 {
     [SerializeField] private Button turnEndBtn;
     [SerializeField] private Button turnStrBtn;
-    [SerializeField] private ItemDateBase itemDate;
-    [SerializeField] private List<>
+    //[SerializeField] private ItemDateBase itemDate;
     private List<I_Obsever> endbuttonObsevers = new List<I_Obsever>();
     private List<I_Obsever> startbuttonObsevers = new List<I_Obsever>();
     Dictionary<int, List<I_Obsever>> ObseverSet;

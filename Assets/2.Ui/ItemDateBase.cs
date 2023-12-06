@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "ItemDateBase", menuName = "ItemDateBaseDateBase", order = 1)]
+[CreateAssetMenu(fileName = "ItemDateBase", menuName = "ItemDateBase", order = 1)]
 public class ItemDateBase : ScriptableObject
 {
-    [SerializeField] private Sprite[] slot = new Sprite[5];
+    [SerializeField] private Sprite[] item = new Sprite[5];
+    public Sprite[] Item { get { return item; } set => value = item; }
 }
