@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class BingoManager : SingleTone<BingoManager>,IPointerClickHandler
+public class BingoManager : SingleTone<BingoManager>, IPointerClickHandler
 {
     [SerializeField] private Image[] slot = new Image[16];
 
@@ -19,17 +19,18 @@ public class BingoManager : SingleTone<BingoManager>,IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log(CurrentItem);
+        //Debug.Log(CurrentItem);
         if (CurrentItem != null)
         {
             foreach (var item in slot)
             {
-                if (item == eventData.pointerCurrentRaycast.gameObject)
+                if (item.gameObject == eventData.pointerCurrentRaycast.gameObject)
                 {
                     item.sprite = CurrentItem;
+                    break;
                 }
             }
         }
     }
-
 }
+

@@ -18,9 +18,15 @@ public class InventoryManager : MonoBehaviour, IPointerClickHandler
     }
     public void OnPointerClick(PointerEventData eventData)
     {
-        clickedObject = eventData.pointerCurrentRaycast.gameObject;
-        Debug.Log(clickedObject.TryGetComponent(out Image clickItem));
+        foreach (var item in inventory)
+        {
+            if (item.gameObject == eventData.pointerCurrentRaycast.gameObject)
+            {
+                clickedObject = eventData.pointerCurrentRaycast.gameObject;
+                Debug.Log(clickedObject.TryGetComponent(out Image clickItem));
+                BingoManager.Instance.CurrentItem = clickItem.sprite;
+                break;
+            }
+        }
     }
 }
-        //clickedObject.TryGetComponent(out Sprite clickItem);
-        //BingoManager.Instance.CurrentItem = clickItem.sprite;
