@@ -3,23 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System;
 
 public class BingoManager : SingleTone<BingoManager>, IPointerClickHandler
 {
     [SerializeField] private Image[] slot = new Image[16];
-
-    public LinkedList<Image> SlotItem { get; set; } = new LinkedList<Image>();
-    public Queue<Image> OneSaveItem { get; set; } = new Queue<Image>();
+    private Sprite normalImg;
+    private QueueWithLikedList<Image> OneSaveItem = new QueueWithLikedList<Image>();
+    //public Queue<Image> OneSaveItem { get; set; } = new Queue<Image>();
     public Sprite CurrentItem { get; set; }
 
     private void Start()
     {
-        Debug.Log(CurrentItem);
+        normalImg = slot[0].sprite;
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        //Debug.Log(CurrentItem);
         if (CurrentItem != null)
         {
             foreach (var item in slot)
@@ -31,6 +31,7 @@ public class BingoManager : SingleTone<BingoManager>, IPointerClickHandler
                 }
             }
         }
+
     }
 }
 

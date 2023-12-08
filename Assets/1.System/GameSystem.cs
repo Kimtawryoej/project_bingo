@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GameSystem : MonoBehaviour, I_Obsever
@@ -8,7 +9,6 @@ public class GameSystem : MonoBehaviour, I_Obsever
     [SerializeField] private ConditionDateBase condition;
 
     private int weight = 1;
-
     [SerializeField] private bool check;
     public bool Check
     {
@@ -64,4 +64,13 @@ public class GameSystem : MonoBehaviour, I_Obsever
         Check = true;
         weight = 1;
     }
+}
+public class QueueWithLikedList<T> : MonoBehaviour
+{
+    LinkedList<T> Queue = new LinkedList<T>();
+
+    private void Add(T Object) { Queue.AddFirst(Object);}
+    private T Push(T Object) { return Queue.Last();}
+    private void Remove(T Object) { Queue.Remove(Object);}
+    private void Clear() { Queue.Clear();}
 }
