@@ -30,8 +30,10 @@ public class UI : SingleTone<UI>, I_ObseverManager
 
     private void clickGather()
     {
-        turnEndBtn.onClick.AddListener(() => NotifyObserver(endbuttonObsevers));
-        turnStrBtn.onClick.AddListener(() => NotifyObserver(startbuttonObsevers));
+        if(GameSystem.Instance.Condition.Repeat.TurnEnd)
+            turnEndBtn.onClick.AddListener(() => NotifyObserver(endbuttonObsevers));
+        if (GameSystem.Instance.Condition.Repeat.TurnSt)
+            turnStrBtn.onClick.AddListener(() => NotifyObserver(startbuttonObsevers));
     }
 
 

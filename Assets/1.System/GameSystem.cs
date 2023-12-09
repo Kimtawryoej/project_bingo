@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class GameSystem : MonoBehaviour, I_Obsever
+public class GameSystem : SingleTone<GameSystem>, I_Obsever
 {
     [SerializeField] private ConditionDateBase condition;
-
+    public ConditionDateBase Condition { get { return condition; } set => condition = value; }
     private int weight = 1;
     [SerializeField] private bool check;
     public bool Check
@@ -27,7 +27,8 @@ public class GameSystem : MonoBehaviour, I_Obsever
     private void Start()
     {
         UI.Instance.Add(this, 1);
-        UI.Instance.Add(condition, 2);
+        UI.Instance.Add(Condition, 2);
+        UI.Instance.Add(BingoManager.Instance, 1);
         StartCoroutine(turn());
     }
 
@@ -37,40 +38,54 @@ public class GameSystem : MonoBehaviour, I_Obsever
         WaitForSeconds Wait = new WaitForSeconds(3);
         while (true)
         {
-            if (Check)
-            {
-                Debug.Log("¸ØÃã");
-                weight = 1;
-                yield return waiting(condition.TurnMethod(), () => turn());
-            }
-            else
-            {
-                weight *= 2;
-                Debug.Log(weight);
-            }
-            yield return Wait;// ¼öÁ¤*
+            yield return waiting(Condition.TurnMethod(Condition.Repeat.TurnSt));
+
+            if(Condition.Repeat.TurnEnd)
+                yield return timer(Wait);
+
+            yield return waiting(Condition.TurnMethod(Condition.Repeat.TurnEnd));
+
+            yield return waiting(Condition.TurnMethod(Condition.Repeat.Battle));
+
+            //if (Check)
+            //{
+            //    Debug.Log("¸ØÃã");
+            //    weight = 1;
+            //    yield return waiting(Condition.TurnMethod());//´Ù¸¥ Á¶°ÇÀ» Áà¾ßÇÔ => ÀûÀÇ Çàµ¿ÀÌ ¸ðµÎ ³¡³­ÈÄ
+            //}
+            //else
+            //{
+            //    weight *= 2;
+            //    //Debug.Log(weight);
+            //}
         }
     }
 
-
-    private IEnumerator waiting(Func<bool> condition, Func<IEnumerator> StCoroutine)
+    public IEnumerator timer(WaitForSeconds wait)
     {
-        yield return new WaitUntil(condition);
+        yield return wait;
+        weight *= 2;
+    }
+
+    public IEnumerator waiting(bool condition)
+    {
+        yield return new WaitUntil(() => condition == false);
     }
 
 
     public void Refresh()
     {
-        Check = true;
+        Condition.Repeat.TurnEnd = false;
+        Condition.Repeat.Battle = true;
         weight = 1;
     }
 }
 public class QueueWithLikedList<T> : MonoBehaviour
 {
-    LinkedList<T> Queue = new LinkedList<T>();
-
-    private void Add(T Object) { Queue.AddFirst(Object);}
-    private T Push(T Object) { return Queue.Last();}
-    private void Remove(T Object) { Queue.Remove(Object);}
-    private void Clear() { Queue.Clear();}
+    private LinkedList<T> Queue = new LinkedList<T>();
+    public void Add(T Object) { Queue.AddFirst(Object); }
+    public T Push() { return Queue.Last(); }
+    public void Remove(T Object) { Queue.Remove(Object); }
+    public void Clear() { Queue.Clear(); }
+    public int Count() { return Queue.Count; }
 }
