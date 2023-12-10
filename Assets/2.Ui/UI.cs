@@ -12,7 +12,7 @@ public class UI : SingleTone<UI>, I_ObseverManager
     private List<I_Obsever> endbuttonObsevers = new List<I_Obsever>();
     private List<I_Obsever> startbuttonObsevers = new List<I_Obsever>();
     Dictionary<int, List<I_Obsever>> ObseverSet;
-    
+
 
     public override void Awake()
     {
@@ -30,14 +30,12 @@ public class UI : SingleTone<UI>, I_ObseverManager
 
     private void clickGather()
     {
-        if(GameSystem.Instance.Condition.Repeat.TurnEnd)
-            turnEndBtn.onClick.AddListener(() => NotifyObserver(endbuttonObsevers));
-        if (GameSystem.Instance.Condition.Repeat.TurnSt)
-            turnStrBtn.onClick.AddListener(() => NotifyObserver(startbuttonObsevers));
+        turnEndBtn.onClick.AddListener(() => NotifyObserver(endbuttonObsevers, GameSystem.Instance.Condition.Repeat.TurnEnd));
+        turnStrBtn.onClick.AddListener(() => NotifyObserver(startbuttonObsevers, GameSystem.Instance.Condition.Repeat.TurnSt));
     }
 
 
-    public void Add(I_Obsever obsever,int index)
+    public void Add(I_Obsever obsever, int index)
     {
         ObseverSet[index].Add(obsever);
     }
@@ -45,11 +43,14 @@ public class UI : SingleTone<UI>, I_ObseverManager
     {
         ObseverSet[index].Remove(obsever);
     }
-    public void NotifyObserver(List<I_Obsever> obsevers)
+    public void NotifyObserver<T>(List<I_Obsever> obsevers, T value)
     {
-        foreach (I_Obsever obsever in obsevers)
+        if (value.Equals(true))
         {
-            obsever.Refresh();
+            foreach (I_Obsever obsever in obsevers)
+            {
+                obsever.Refresh();
+            }
         }
     }
 }

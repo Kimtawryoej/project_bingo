@@ -7,21 +7,21 @@ using System;
 public class ActionDateBase : ScriptableObject
 {
     [SerializeField] ItemDateBase Item;
-    public Dictionary<Sprite, string> Actions;
-    Func<string> skill1 = () => "skill1";
-    Func<string> skill2 = () => "skill2";
-    Func<string> skill3 = () => "skill3";
-    Func<string> skill4 = () => "skill4";
-    Func<string> skill5 = () => "skill5";
+    public Dictionary<Sprite, Action> Actions;
+    private Action attackSkill1 = () => Player.Instance.Anim.SetBool("Attack",true);
+    private Action attackSkill2 = () => Player.Instance.Anim.SetBool("Attack", true);
+    private Action attackSkill3 = () => Player.Instance.Anim.SetBool("Attack", true);
+    private Action attackSkill4 = () => Player.Instance.Anim.SetBool("Attack", true);
+    private Action attackSkill5 = () => Player.Instance.Anim.SetBool("Attack", true);
     public void ActionReset()
     {
-        Actions = new Dictionary<Sprite, string>()
+        Actions = new Dictionary<Sprite, Action>()
         {
-            {Item.Item[0],skill1()},
-            {Item.Item[1],skill2()},
-            {Item.Item[2],skill3()},
-            {Item.Item[3],skill4()},
-            {Item.Item[4],skill5()},
+            {Item.Item[0],attackSkill1},
+            {Item.Item[1],attackSkill2},
+            {Item.Item[2],attackSkill3},
+            {Item.Item[3],attackSkill4},
+            {Item.Item[4],attackSkill5},
         };
         Debug.Log("¼³Á¤");
     }

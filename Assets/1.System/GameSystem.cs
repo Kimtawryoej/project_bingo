@@ -23,12 +23,18 @@ public class GameSystem : SingleTone<GameSystem>, I_Obsever
             check = value;
         }
     }
+    public override void Awake()
+    {
+        base.Awake();
+        condition.Repeat.TurnSt = true;
+        condition.BoolSet();
+    }
 
     private void Start()
     {
+        
         UI.Instance.Add(this, 1);
         UI.Instance.Add(Condition, 2);
-        UI.Instance.Add(BingoManager.Instance, 1);
         StartCoroutine(turn());
     }
 
@@ -38,14 +44,14 @@ public class GameSystem : SingleTone<GameSystem>, I_Obsever
         WaitForSeconds Wait = new WaitForSeconds(3);
         while (true)
         {
-            yield return waiting(Condition.TurnMethod(Condition.Repeat.TurnSt));
+            yield return waiting(Condition.Repeat.TurnSt);
 
             if(Condition.Repeat.TurnEnd)
                 yield return timer(Wait);
 
-            yield return waiting(Condition.TurnMethod(Condition.Repeat.TurnEnd));
+            yield return waiting(Condition.Repeat.TurnEnd);
 
-            yield return waiting(Condition.TurnMethod(Condition.Repeat.Battle));
+            yield return waiting(Condition.Repeat.Battle);
 
             //if (Check)
             //{
@@ -75,6 +81,7 @@ public class GameSystem : SingleTone<GameSystem>, I_Obsever
 
     public void Refresh()
     {
+        Debug.Log("¿¸≈ı");
         Condition.Repeat.TurnEnd = false;
         Condition.Repeat.Battle = true;
         weight = 1;
@@ -82,9 +89,10 @@ public class GameSystem : SingleTone<GameSystem>, I_Obsever
 }
 public class QueueWithLikedList<T> : MonoBehaviour
 {
+    private T OneDestory;
     private LinkedList<T> Queue = new LinkedList<T>();
     public void Add(T Object) { Queue.AddFirst(Object); }
-    public T Push() { return Queue.Last(); }
+    public T Push() { OneDestory = Queue.Last(); Queue.Remove(OneDestory); return OneDestory; }
     public void Remove(T Object) { Queue.Remove(Object); }
     public void Clear() { Queue.Clear(); }
     public int Count() { return Queue.Count; }
