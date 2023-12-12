@@ -8,9 +8,10 @@ using System;
 public class BingoManager : SingleTone<BingoManager>, IPointerClickHandler
 {
     [SerializeField] private ActionDateBase m_ActionDateBase;
-    [SerializeField] private Image[] slot = new Image[16];
+    public Image[] slot = new Image[16]; //이거 private로 바꾸고 해야함 배열 프로퍼티 찾아보삼
     [SerializeField] private Sprite normalImg;
-    private QueueWithLikedList<Sprite> OneSaveItem = new QueueWithLikedList<Sprite>();
+    public Sprite NormalImg { get => normalImg; }
+    private QueueWithLikedList<Image> OneSaveItem = new QueueWithLikedList<Image>();
     public Sprite CurrentItem { get; set; }
     private GameObject clickObject;
 
@@ -21,9 +22,6 @@ public class BingoManager : SingleTone<BingoManager>, IPointerClickHandler
     }
     private void Start()
     {
-        Debug.Log(GameSystem.Instance.Condition.Repeat.TurnSt);
-        Debug.Log(GameSystem.Instance.Condition.Repeat.TurnEnd);
-        Debug.Log(GameSystem.Instance.Condition.Repeat.Battle);
         StartCoroutine(ActionPl());
         normalImg = slot[0].sprite;
     }
@@ -45,7 +43,7 @@ public class BingoManager : SingleTone<BingoManager>, IPointerClickHandler
         }
         else if (!ClickObjectSp.sprite.Equals(normalImg) && GameSystem.Instance.Condition.Repeat.TurnEnd)
         {
-            OneSaveItem.Add(ClickObjectSp.sprite);
+            OneSaveItem.Add(ClickObjectSp);
         }
     }
 
@@ -55,11 +53,12 @@ public class BingoManager : SingleTone<BingoManager>, IPointerClickHandler
         while (true)
         {
             yield return new WaitUntil(() => GameSystem.Instance.Condition.Repeat.Battle);
-            for (int i = OneSaveItem.Count(); i > 0 ; i--)
+            for (int i = OneSaveItem.Count(); i > 0; i--)
             {
-                m_ActionDateBase.Actions[OneSaveItem.Push()]();
-                yield return Player.Instance.AniStop("2_Attack_Bow", "Attack");
+                m_ActionDateBase.Actions[OneSaveItem.Push().sprite]();
+                yield return Player.Instance.AniStop("2_Attack_Bow", "Attack"); //액션안에 애니메이션을 실행하는 코드가 있을때만 실행
             }
+            OneSaveItem.Clear();
             yield return wait;
             yield return Monster.Instance.Attack();
         }

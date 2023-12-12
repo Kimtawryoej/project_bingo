@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public struct UnitStatInfo
@@ -9,6 +10,8 @@ public struct UnitStatInfo
     public int MinHp;
     public float MoveSpeed;
     public int AttackPower;
+    public float Deefense;
+    public int AttackPowerUp;
 }
 
 
@@ -17,19 +20,19 @@ public struct UnitStatInfo
 public abstract class Unit : MonoBehaviour
 {
     #region º¯¼ö
+    [SerializeField] protected bool hitcheck;
     [SerializeField] protected UnitStatInfo unitStat;
     public UnitStatInfo UnitStat => unitStat;
 
     [Space]
     [SerializeField] protected GameObject attackEffect;
-    [SerializeField] protected GameObject hitEffect;
     [SerializeField] protected GameObject dashEffect;
 
     [Space]
     [SerializeField] private AudioClip hitSound;
 
-    protected int hp;
-    public int Hp => hp;
+    [SerializeField] protected int currentHp;
+    public int CurrentHp => currentHp;
 
     protected bool isDead = false;
 
@@ -52,7 +55,7 @@ public abstract class Unit : MonoBehaviour
 
     protected virtual void Start()
     {
-        //ReSetStat();
+        ReSetStat();
     }
 
     #region ReSet
@@ -65,8 +68,7 @@ public abstract class Unit : MonoBehaviour
 
     protected virtual void ResetHp()
     {
-        hp = unitStat.MaxHp;
-        unitStat.MinHp = 0;
+        currentHp = unitStat.MaxHp;
     }
 
     //protected abstract void ResetSpeed();
@@ -99,12 +101,12 @@ public abstract class Unit : MonoBehaviour
         ChangeHp(healValue);
     }
 
-    protected virtual void ChangeHp(int value)
+    public virtual void ChangeHp(int value)
     {
         if (!isDead)
         {
             ClampHp(ref value);
-            if (Hp <= UnitStat.MinHp)
+            if (CurrentHp <= UnitStat.MinHp)
             {
                 Death();
                 isDead = true;
@@ -114,17 +116,17 @@ public abstract class Unit : MonoBehaviour
 
     protected void ClampHp(ref int value)
     {
-        if (Hp + value >= UnitStat.MaxHp)
+        if (CurrentHp + value >= UnitStat.MaxHp)
         {
-            hp = UnitStat.MaxHp;
+            currentHp = UnitStat.MaxHp;
         }
 
-        else if (Hp + value <= UnitStat.MinHp)
+        else if (CurrentHp + value <= UnitStat.MinHp)
         {
-            hp = UnitStat.MinHp;
+            currentHp = UnitStat.MinHp;
         }
 
-        else { hp += value; }
+        else { currentHp += value; }
     }
     #endregion
 
@@ -136,7 +138,7 @@ public abstract class Unit : MonoBehaviour
 
     public int GetHp()
     {
-        return hp;
+        return currentHp;
     }
 
     public int GetMaxHp()
@@ -150,16 +152,28 @@ public abstract class Unit : MonoBehaviour
     }
     #endregion
 
+    #region Defence
+    public void ChangeDeefense(float value)
+    {
+        unitStat.Deefense += value;
+    }
+    #endregion
+
+    #region AttackPowerUp
+    public void ChangeAttackPowerUp(int value)
+    {
+        unitStat.AttackPowerUp += value;
+    }
+    #endregion
     protected virtual void Death()
     {
-        //CameraShakeSystem.Instance.CameraShake(0.5f, 0.2f);
+        SceneManager.LoadScene(0);
     }
 
     public IEnumerator AniStop(string Aniname, string Aniset)
     {
         yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
-        Debug.Log("Rmx");
         animator.SetBool(Aniset, false);
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(2.5f);
     }
 }

@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.UI;
+using UnityEditor;
+using Unity.VisualScripting;
+using UnityEngine.EventSystems;
 
 public class UI : SingleTone<UI>, I_ObseverManager
 {
     [SerializeField] private Button turnEndBtn;
     [SerializeField] private Button turnStrBtn;
-    //[SerializeField] private ItemDateBase itemDate;
+    [SerializeField] private Image skillNameBack;
+    [SerializeField] private Text skillNameText;
     private List<I_Obsever> endbuttonObsevers = new List<I_Obsever>();
     private List<I_Obsever> startbuttonObsevers = new List<I_Obsever>();
     Dictionary<int, List<I_Obsever>> ObseverSet;
@@ -26,6 +30,8 @@ public class UI : SingleTone<UI>, I_ObseverManager
     private void Start()
     {
         clickGather();
+        skillNameBack.gameObject.SetActive(false);
+        StartCoroutine(SkillNameOff());
     }
 
     private void clickGather()
@@ -34,7 +40,23 @@ public class UI : SingleTone<UI>, I_ObseverManager
         turnStrBtn.onClick.AddListener(() => NotifyObserver(startbuttonObsevers, GameSystem.Instance.Condition.Repeat.TurnSt));
     }
 
+    
+    public void SkillName(string skill)
+    {
+        skillNameBack.gameObject.SetActive(true);
+        skillNameText.text = skill;
 
+
+    }
+    IEnumerator SkillNameOff()
+    {
+        skillNameBack.gameObject.TryGetComponent(out Animator ani);
+        while (true)
+        {
+            yield return new WaitUntil(() => ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
+            skillNameBack.gameObject.SetActive(false);
+        }
+    }
     public void Add(I_Obsever obsever, int index)
     {
         ObseverSet[index].Add(obsever);
@@ -49,7 +71,7 @@ public class UI : SingleTone<UI>, I_ObseverManager
         {
             foreach (I_Obsever obsever in obsevers)
             {
-                obsever.Refresh();
+                obsever.Refresh<int>(1);
             }
         }
     }

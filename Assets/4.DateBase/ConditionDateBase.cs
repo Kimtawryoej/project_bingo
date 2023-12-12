@@ -15,11 +15,11 @@ public struct Repeat
 public class ConditionDateBase : ScriptableObject, I_Obsever
 {
     public Repeat Repeat;
-    public void Refresh()
+    public void Refresh<T>(T value)
     {
         Debug.Log("³¡");
-        Repeat.TurnSt = false;
-        Repeat.TurnEnd = true; 
+        Repeat.TurnSt = !Convert.ToBoolean(value);
+        Repeat.TurnEnd = Convert.ToBoolean(value);
     }
     public void BoolSet()
     {

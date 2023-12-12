@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameSystem : SingleTone<GameSystem>, I_Obsever
 {
@@ -35,43 +36,52 @@ public class GameSystem : SingleTone<GameSystem>, I_Obsever
         
         UI.Instance.Add(this, 1);
         UI.Instance.Add(Condition, 2);
-        StartCoroutine(turn());
+        UI.Instance.Add(RandomChoice.Instance, 1);
+        //StartCoroutine(turn());
     }
 
-
-    private IEnumerator turn()
+    public void TrunEnd()
     {
-        WaitForSeconds Wait = new WaitForSeconds(3);
-        while (true)
+        Player.Instance.ChangeAttackPowerUp(-Player.Instance.UnitStat.AttackPowerUp);
+        Player.Instance.ChangeDeefense(-Player.Instance.UnitStat.Deefense);
+        foreach (Image i in BingoManager.Instance.slot)
         {
-            yield return waiting(Condition.Repeat.TurnSt);
-
-            if(Condition.Repeat.TurnEnd)
-                yield return timer(Wait);
-
-            yield return waiting(Condition.Repeat.TurnEnd);
-
-            yield return waiting(Condition.Repeat.Battle);
-
-            //if (Check)
-            //{
-            //    Debug.Log("멈춤");
-            //    weight = 1;
-            //    yield return waiting(Condition.TurnMethod());//다른 조건을 줘야함 => 적의 행동이 모두 끝난후
-            //}
-            //else
-            //{
-            //    weight *= 2;
-            //    //Debug.Log(weight);
-            //}
+            i.sprite = BingoManager.Instance.NormalImg;
         }
     }
+    //private IEnumerator turn()
+    //{
+    //    WaitForSeconds Wait = new WaitForSeconds(3);
+    //    while (true)
+    //    {
+    //        yield return waiting(Condition.Repeat.TurnSt);
 
-    public IEnumerator timer(WaitForSeconds wait)
-    {
-        yield return wait;
-        weight *= 2;
-    }
+    //        if (Condition.Repeat.TurnEnd)
+    //            yield return timer(Wait);
+
+    //        yield return waiting(Condition.Repeat.TurnEnd);
+
+    //        yield return waiting(Condition.Repeat.Battle);
+
+    //        if (Check)
+    //        {
+    //            Debug.Log("멈춤");
+    //            weight = 1;
+    //            yield return waiting(Condition.TurnMethod());//다른 조건을 줘야함 => 적의 행동이 모두 끝난후
+    //        }
+    //        else
+    //        {
+    //            weight *= 2;
+    //            //Debug.Log(weight);
+    //        }
+    //    }
+    //}
+
+    //public IEnumerator timer(WaitForSeconds wait)
+    //{
+    //    yield return wait;
+    //    weight *= 2;
+    //}
 
     public IEnumerator waiting(bool condition)
     {
@@ -79,19 +89,18 @@ public class GameSystem : SingleTone<GameSystem>, I_Obsever
     }
 
 
-    public void Refresh()
+    public void Refresh<T>(T value)
     {
-        Debug.Log("전투");
-        Condition.Repeat.TurnEnd = false;
-        Condition.Repeat.Battle = true;
-        weight = 1;
+        //Debug.Log("전투");
+        Condition.Repeat.TurnEnd = !Convert.ToBoolean(value);
+        Condition.Repeat.Battle = Convert.ToBoolean(value);
     }
 }
 public class QueueWithLikedList<T> : MonoBehaviour
 {
     private T OneDestory;
     private LinkedList<T> Queue = new LinkedList<T>();
-    public void Add(T Object) { Queue.AddFirst(Object); }
+    public void Add(T Object) { if (!Queue.Contains(Object)) { Queue.AddFirst(Object); } }
     public T Push() { OneDestory = Queue.Last(); Queue.Remove(OneDestory); return OneDestory; }
     public void Remove(T Object) { Queue.Remove(Object); }
     public void Clear() { Queue.Clear(); }
