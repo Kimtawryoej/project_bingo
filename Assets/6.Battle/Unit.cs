@@ -167,7 +167,12 @@ public abstract class Unit : MonoBehaviour
     #endregion
     protected virtual void Death()
     {
-        SceneManager.LoadScene(0);
+        animator.SetBool("Death", true);
+        if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
+        {
+            Destroy(gameObject);
+        }
+        //scenemanager.loadscene(0);
     }
 
     public IEnumerator AniStop(string Aniname, string Aniset)

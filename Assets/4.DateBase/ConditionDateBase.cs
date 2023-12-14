@@ -17,7 +17,6 @@ public class ConditionDateBase : ScriptableObject, I_Obsever
     public Repeat Repeat;
     public void Refresh<T>(T value)
     {
-        Debug.Log("³¡");
         Repeat.TurnSt = !Convert.ToBoolean(value);
         Repeat.TurnEnd = Convert.ToBoolean(value);
     }

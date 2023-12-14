@@ -7,7 +7,6 @@ public class sTART : MonoBehaviour
 {
     public void Click()
     {
-        Debug.Log("¿Ãµø");
         SceneManager.LoadScene(1);
     }
 }

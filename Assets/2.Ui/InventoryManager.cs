@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using  UnityEditor;
+using UnityEditor;
 
-public class InventoryManager : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
+public class InventoryManager : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private ItemDateBase itemDate;
     [SerializeField] private Image[] inventory = new Image[12];
@@ -13,22 +13,27 @@ public class InventoryManager : MonoBehaviour, IPointerClickHandler, IPointerEnt
     [SerializeField] private Text skilltextImageText;
     [SerializeField] private string[] skilltext = new string[12];
     public GameObject clickedObject;
-    private void Awake()
+    
+    private void Start()
     {
-        for (int i = 0; i < inventory.Length; i++)
+        for (int i = 0; i < 3; i++)
         {
-            inventory[i].sprite = itemDate.Item[i];
+            for (int j = 0; j < 4; j++)
+            {
+                inventory[(j + (4 * i))].sprite = itemDate.Items[i, j];
+            }
         }
     }
     public void OnPointerClick(PointerEventData eventData)
     {
-        foreach (Image item in inventory)
+        for (int i = 0; i < inventory.Length; i++)
         {
-            if (item.gameObject == eventData.pointerCurrentRaycast.gameObject)
+            if (inventory[i].gameObject == eventData.pointerCurrentRaycast.gameObject)
             {
+                skilltextImageText.text = skilltext[i];
                 foreach (Image item2 in RandomChoice.Instance.Slot)
                 {
-                    if (item.sprite.Equals(item2.sprite))
+                    if (inventory[i].sprite.Equals(item2.sprite))
                     {
                         clickedObject = eventData.pointerCurrentRaycast.gameObject;
                         clickedObject.TryGetComponent(out Image clickItem);
@@ -38,29 +43,5 @@ public class InventoryManager : MonoBehaviour, IPointerClickHandler, IPointerEnt
                 }
             }
         }
-    }
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-
-        for (int i = 0; i < inventory.Length; i++)
-        {
-            if (inventory[i].gameObject == eventData.pointerCurrentRaycast.gameObject)
-            {
-                skilltextImageText.text = skilltext[i];
-                
-            }
-        }
-    }
-    public void OnPointerExit(PointerEventData eventData)
-    {
-
-        for (int i = 0; i < inventory.Length; i++)
-        {
-            if (inventory[i].gameObject == eventData.pointerCurrentRaycast.gameObject)
-            {
-                skilltextImageText.text = "";
-            }
-        }
-
     }
 }

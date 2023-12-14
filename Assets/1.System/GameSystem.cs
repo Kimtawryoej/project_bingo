@@ -7,81 +7,37 @@ using UnityEngine.UI;
 
 public class GameSystem : SingleTone<GameSystem>, I_Obsever
 {
-    [SerializeField] private ConditionDateBase condition;
-    public ConditionDateBase Condition { get { return condition; } set => condition = value; }
-    private int weight = 1;
-    [SerializeField] private bool check;
-    public bool Check
-    {
-        get
-        {
-            bool onetry = check;
-            check = false;
-            return onetry;
-        }
-        set
-        {
-            check = value;
-        }
-    }
+    [SerializeField] private ConditionDateBase conditionDateBase;
+    [SerializeField] private ActionDateBase actionDateBase;
+    [SerializeField] private ItemDateBase itemDateBase;
+    public ItemDateBase ItemDateBase => itemDateBase;
+    public ConditionDateBase Condition => conditionDateBase;
     public override void Awake()
     {
         base.Awake();
-        condition.Repeat.TurnSt = true;
-        condition.BoolSet();
+        conditionDateBase.Repeat.TurnSt = true;
+        itemDateBase.ItemsSet();
+        conditionDateBase.BoolSet();
+        actionDateBase.ActionReset();
     }
 
     private void Start()
     {
-        
+
         UI.Instance.Add(this, 1);
         UI.Instance.Add(Condition, 2);
         UI.Instance.Add(RandomChoice.Instance, 1);
-        //StartCoroutine(turn());
     }
 
     public void TrunEnd()
     {
         Player.Instance.ChangeAttackPowerUp(-Player.Instance.UnitStat.AttackPowerUp);
         Player.Instance.ChangeDeefense(-Player.Instance.UnitStat.Deefense);
-        foreach (Image i in BingoManager.Instance.slot)
+        foreach (Image i in BingoManager.Instance.Slot)
         {
             i.sprite = BingoManager.Instance.NormalImg;
         }
     }
-    //private IEnumerator turn()
-    //{
-    //    WaitForSeconds Wait = new WaitForSeconds(3);
-    //    while (true)
-    //    {
-    //        yield return waiting(Condition.Repeat.TurnSt);
-
-    //        if (Condition.Repeat.TurnEnd)
-    //            yield return timer(Wait);
-
-    //        yield return waiting(Condition.Repeat.TurnEnd);
-
-    //        yield return waiting(Condition.Repeat.Battle);
-
-    //        if (Check)
-    //        {
-    //            Debug.Log("멈춤");
-    //            weight = 1;
-    //            yield return waiting(Condition.TurnMethod());//다른 조건을 줘야함 => 적의 행동이 모두 끝난후
-    //        }
-    //        else
-    //        {
-    //            weight *= 2;
-    //            //Debug.Log(weight);
-    //        }
-    //    }
-    //}
-
-    //public IEnumerator timer(WaitForSeconds wait)
-    //{
-    //    yield return wait;
-    //    weight *= 2;
-    //}
 
     public IEnumerator waiting(bool condition)
     {

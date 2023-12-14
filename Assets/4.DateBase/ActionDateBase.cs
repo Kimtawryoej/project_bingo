@@ -25,32 +25,32 @@ public class ActionDateBase : ScriptableObject, I_ObseverManager
     public void ActionReset()
     {
         //20 / 100 * Player.Instance.UnitStat.MaxHp디펜스 실수 값 넣어야함
-        attackSkill1 = () => { Player.Instance.Anim.SetBool("Attack", true); NotifyObserver<int>(PlayerObsevers, Player.Instance.UnitStat.AttackPower + Player.Instance.UnitStat.AttackPowerUp); UI.Instance.SkillName("오브젝트 어택"); Attack++; };
-        attackSkill2 = () => { Player.Instance.Anim.SetBool("Attack", true); NotifyObserver<int>(PlayerObsevers, Player.Instance.UnitStat.AttackPower + 1); UI.Instance.SkillName("클래스 어택"); Attack++; };
-        attackSkill3 = () => { Player.Instance.Anim.SetBool("Attack", true); NotifyObserver<int>(PlayerObsevers, Player.Instance.UnitStat.MaxHp); UI.Instance.SkillName("인스턴스"); Attack++; };
-        attackSkill4 = () => { Player.Instance.Anim.SetBool("Attack", true); NotifyObserver<int>(PlayerObsevers, Player.Instance.UnitStat.AttackPower + 3); UI.Instance.SkillName("선형탐색 어택"); Attack++;};
-        defenseSkill1 = () => { Player.Instance.ChangeDeefense(1); UI.Instance.SkillName("알고리즘 방어"); Defense++; };
-        defenseSkill2 = () => { Player.Instance.ChangeDeefense(2); UI.Instance.SkillName("콜라이더 방어"); Defense++; };
-        defenseSkill3 = () => { Player.Instance.ChangeDeefense(3); UI.Instance.SkillName("메쉬콜라이더 방어"); Defense++; };
-        defenseSkill4 = () => { Player.Instance.ChangeDeefense(4); UI.Instance.SkillName("폴리곤콜라이더 방어"); Defense++; };
-        specialSkill1 = () => { Player.Instance.ChangeAttackPowerUp(1); UI.Instance.SkillName("게임엔진기초"); Defense++; };
-        specialSkill2 = () => { Player.Instance.ChangeHp(1); UI.Instance.SkillName("게임프로그래밍"); Special++; };
-        specialSkill3 = () => { Player.Instance.ChangeDeefense(80 / 100 * Player.Instance.UnitStat.MaxHp); UI.Instance.SkillName("자료구조"); Special++; };
-        specialSkill4 = () => { Player.Instance.ChangeAttackPowerUp(1); Player.Instance.ChangeHp(1); UI.Instance.SkillName("응프"); Special++; };
+        attackSkill1 = () => { Player.Instance.Anim.SetBool("Attack", true); NotifyObserver<int>(PlayerObsevers, Player.Instance.UnitStat.AttackPower + Player.Instance.UnitStat.AttackPowerUp); UI.Instance.SkillName("오브젝트 어택"); };
+        attackSkill2 = () => { Player.Instance.Anim.SetBool("Attack", true); NotifyObserver<int>(PlayerObsevers, Player.Instance.UnitStat.AttackPower + 1); UI.Instance.SkillName("클래스 어택"); };
+        attackSkill3 = () => { Player.Instance.Anim.SetBool("Attack", true); NotifyObserver<int>(PlayerObsevers, Player.Instance.UnitStat.MaxHp); UI.Instance.SkillName("인스턴스"); };
+        attackSkill4 = () => { Player.Instance.Anim.SetBool("Attack", true); NotifyObserver<int>(PlayerObsevers, Player.Instance.UnitStat.AttackPower + 3); UI.Instance.SkillName("선형탐색 어택"); };
+        defenseSkill1 = () => { Player.Instance.ChangeDeefense(1); UI.Instance.SkillName("알고리즘 방어"); ; };
+        defenseSkill2 = () => { Player.Instance.ChangeDeefense(2); UI.Instance.SkillName("콜라이더 방어"); ; };
+        defenseSkill3 = () => { Player.Instance.ChangeDeefense(3); UI.Instance.SkillName("메쉬콜라이더 방어"); ; };
+        defenseSkill4 = () => { Player.Instance.ChangeDeefense(4); UI.Instance.SkillName("폴리곤콜라이더 방어"); ; };
+        specialSkill1 = () => { Player.Instance.ChangeAttackPowerUp(1); UI.Instance.SkillName("게임엔진기초"); ; };
+        specialSkill2 = () => { Player.Instance.ChangeHp(1); UI.Instance.SkillName("게임프로그래밍"); };
+        specialSkill3 = () => { Player.Instance.ChangeDeefense(8); UI.Instance.SkillName("자료구조"); };
+        specialSkill4 = () => { Player.Instance.ChangeAttackPowerUp(1); Player.Instance.ChangeHp(1); UI.Instance.SkillName("응프"); };
         Actions = new Dictionary<Sprite, Action>()
         {
-            {Item.Item[0],attackSkill1},
-            {Item.Item[1],attackSkill2},
-            {Item.Item[2],attackSkill3},
-            {Item.Item[3],attackSkill4},
-            {Item.Item[4],defenseSkill1},
-            {Item.Item[5],defenseSkill2},
-            {Item.Item[6],defenseSkill3},
-            {Item.Item[7],defenseSkill4},
-            {Item.Item[8],specialSkill1},
-            {Item.Item[9],specialSkill2},
-            {Item.Item[10],specialSkill3},
-            {Item.Item[11],specialSkill4},
+            {Item.Items[0, 0],attackSkill1},
+            {Item.Items[0, 1],attackSkill2},
+            {Item.Items[0, 2],attackSkill3},
+            {Item.Items[0, 3],attackSkill4},
+            {Item.Items[1, 0],defenseSkill1},
+            {Item.Items[1, 1],defenseSkill2},
+            {Item.Items[1, 2],defenseSkill3},
+            {Item.Items[1, 3],defenseSkill4},
+            {Item.Items[2, 0],specialSkill1},
+            {Item.Items[2, 1],specialSkill2},
+            {Item.Items[2, 2],specialSkill3},
+            {Item.Items[2, 3],specialSkill4},
         };
     }
 

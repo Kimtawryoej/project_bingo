@@ -13,6 +13,7 @@ public class UI : SingleTone<UI>, I_ObseverManager
     [SerializeField] private Button turnStrBtn;
     [SerializeField] private Image skillNameBack;
     [SerializeField] private Text skillNameText;
+    [SerializeField] private Text PlayerStates;
     private List<I_Obsever> endbuttonObsevers = new List<I_Obsever>();
     private List<I_Obsever> startbuttonObsevers = new List<I_Obsever>();
     Dictionary<int, List<I_Obsever>> ObseverSet;
@@ -27,11 +28,19 @@ public class UI : SingleTone<UI>, I_ObseverManager
             {2,startbuttonObsevers}
         };
     }
+
     private void Start()
     {
         clickGather();
         skillNameBack.gameObject.SetActive(false);
         StartCoroutine(SkillNameOff());
+        StatesText();
+    }
+
+    private void Update()
+    {
+        UI.Instance.StatesText();
+
     }
 
     private void clickGather()
@@ -40,14 +49,12 @@ public class UI : SingleTone<UI>, I_ObseverManager
         turnStrBtn.onClick.AddListener(() => NotifyObserver(startbuttonObsevers, GameSystem.Instance.Condition.Repeat.TurnSt));
     }
 
-    
     public void SkillName(string skill)
     {
         skillNameBack.gameObject.SetActive(true);
         skillNameText.text = skill;
-
-
     }
+
     IEnumerator SkillNameOff()
     {
         skillNameBack.gameObject.TryGetComponent(out Animator ani);
@@ -57,14 +64,24 @@ public class UI : SingleTone<UI>, I_ObseverManager
             skillNameBack.gameObject.SetActive(false);
         }
     }
+
+    public void StatesText()
+    {
+        PlayerStates.text = "Hp:" + Player.Instance.CurrentHp + "\n"
+            + "PowerUp:" + Player.Instance.UnitStat.AttackPowerUp + "\n"
+            + "Defense:" + Player.Instance.UnitStat.Deefense;
+    }
+
     public void Add(I_Obsever obsever, int index)
     {
         ObseverSet[index].Add(obsever);
     }
+
     public void Delete(I_Obsever obsever, int index)
     {
         ObseverSet[index].Remove(obsever);
     }
+
     public void NotifyObserver<T>(List<I_Obsever> obsevers, T value)
     {
         if (value.Equals(true))

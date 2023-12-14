@@ -21,7 +21,7 @@ public class RandomChoice : SingleTone<RandomChoice>, I_Obsever
             yield return new WaitUntil(() => Condition.Repeat.TurnSt && Check);
             foreach (Image item in Slot)
             {
-                item.sprite = Item.Item[UnityEngine.Random.Range(0, 12)];
+                item.sprite = Item.Items[UnityEngine.Random.Range(0,3), UnityEngine.Random.Range(0,4)];
             }
             Check = false;
         }
