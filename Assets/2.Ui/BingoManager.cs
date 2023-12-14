@@ -60,14 +60,26 @@ public class BingoManager : SingleTone<BingoManager>, IPointerClickHandler
         {
             yield return new WaitUntil(() => GameSystem.Instance.Condition.Repeat.Battle);
             yield return BingoCheck();
+            MonsterManager.Instance.MonsterCount[MonsterManager.Instance.Index].TryGetComponent(out Monster monster);//고쳐야함
             for (int i = OneSaveItem.Count(); i > 0; i--)
             {
-                m_ActionDateBase.Actions[OneSaveItem.Push().sprite]();
-                yield return Player.Instance.AniStop("2_Attack_Bow", "Attack"); //액션안에 애니메이션을 실행하는 코드가 있을때만 실행
+                if (monster.gameObject.activeSelf)
+                {
+                    m_ActionDateBase.Actions[OneSaveItem.Push().sprite]();
+                    yield return Player.Instance.AniStop("2_Attack_Bow", "Attack"); //액션안에 애니메이션을 실행하는 코드가 있을때만 실행
+                }
             }
             OneSaveItem.Clear();
             yield return wait;
-            yield return Monster.Instance.Attack();
+            if (monster.gameObject.activeSelf)
+                yield return monster.Attack();
+            else
+            {
+                MonsterManager.Instance.NextMonster();
+                GameSystem.Instance.Condition.Repeat.Battle = false;
+                GameSystem.Instance.Condition.Repeat.TurnSt = true;
+                GameSystem.Instance.TrunEnd();
+            }
         }
     }
 
@@ -127,9 +139,9 @@ public class BingoManager : SingleTone<BingoManager>, IPointerClickHandler
                     }
 
                 }
-                if(m_ActionDateBase.Attack >= 2) { UI.Instance.SkillName("공격업"); Player.Instance.ChangeAttackPowerUp(1); }
-                else if(m_ActionDateBase.Defense >= 2) { UI.Instance.SkillName("방어력"); Player.Instance.ChangeDeefense(1); }
-                else if(m_ActionDateBase.Special >= 2) { UI.Instance.SkillName("공격&방어"); Player.Instance.ChangeDeefense(1); Player.Instance.ChangeAttackPowerUp(1); }
+                if (m_ActionDateBase.Attack >= 2) { UI.Instance.SkillName("공격업"); Player.Instance.ChangeAttackPowerUp(1); }
+                else if (m_ActionDateBase.Defense >= 2) { UI.Instance.SkillName("방어력"); Player.Instance.ChangeDeefense(1); }
+                else if (m_ActionDateBase.Special >= 2) { UI.Instance.SkillName("공격&방어"); Player.Instance.ChangeDeefense(1); Player.Instance.ChangeAttackPowerUp(1); }
                 yield return new WaitForSeconds(0.5f);
                 m_ActionDateBase.Attack = 0; m_ActionDateBase.Defense = 0; m_ActionDateBase.Special = 0;
                 Debug.Log("빙고 초기화");

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -170,7 +171,7 @@ public abstract class Unit : MonoBehaviour
         animator.SetBool("Death", true);
         if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
         //scenemanager.loadscene(0);
     }
