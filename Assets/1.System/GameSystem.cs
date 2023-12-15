@@ -57,7 +57,7 @@ public class QueueWithLikedList<T> : MonoBehaviour
     private T OneDestory;
     private LinkedList<T> Queue = new LinkedList<T>();
     public void Add(T Object) { if (!Queue.Contains(Object)) { Queue.AddFirst(Object); } }
-    public T Push() { OneDestory = Queue.First(); Queue.Remove(OneDestory); return OneDestory; }
+    public T Push() { OneDestory = Queue.Last(); Queue.Remove(OneDestory); return OneDestory; }
     public void Remove(T Object) { Queue.Remove(Object); }
     public void Clear() { Queue.Clear(); }
     public int Count() { return Queue.Count; }
