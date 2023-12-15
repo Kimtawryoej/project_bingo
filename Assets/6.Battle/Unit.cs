@@ -173,7 +173,6 @@ public abstract class Unit : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
-        //scenemanager.loadscene(0);
     }
 
     public IEnumerator AniStop(string Aniname, string Aniset)

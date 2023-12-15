@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MonsterManager : SingleTone<MonsterManager>
 {
@@ -20,13 +21,20 @@ public class MonsterManager : SingleTone<MonsterManager>
             monsterCount[i].gameObject.SetActive(false);
         }
     }
-    public void  NextMonster()
+    public void NextMonster()
     {
         if (!monsterCount[Index].gameObject.activeSelf)
         {
             Index++;
-            monsterCount[Index].SetActive(true);
-            monsterCount[Index].transform.position = targetPos.transform.position;
+            if (Index.Equals(3))
+            {
+                SceneManager.LoadScene(0);
+            }
+            else
+            {
+                monsterCount[Index].SetActive(true);
+                monsterCount[Index].transform.position = targetPos.transform.position;
+            }
         }
         //while (monsterCount[Index].transform.position.x < targetPos.transform.position.x)
         //{

@@ -68,6 +68,9 @@ public class BingoManager : SingleTone<BingoManager>, IPointerClickHandler, I_Ob
                 if (monster.gameObject.activeSelf)
                 {
                     m_ActionDateBase.Actions[OneSaveItem.Push().sprite]();
+                    yield return UI.Instance.SkillNameOff(m_ActionDateBase.OneSaveItem.Push());
+
+                    //Debug.Log(m_ActionDateBase.OneSaveItem.Push());
                     yield return Player.Instance.AniStop("2_Attack_Bow", "Attack"); //액션안에 애니메이션을 실행하는 코드가 있을때만 실행
                 }
             }
@@ -76,7 +79,7 @@ public class BingoManager : SingleTone<BingoManager>, IPointerClickHandler, I_Ob
             if (monster.gameObject.activeSelf)
             {
                 Debug.Log(monster.gameObject);
-                yield return monster.Attack(()=> NotifyObserver<int>(MonsterObsevers, 1));
+                yield return monster.Attack(() => NotifyObserver<int>(MonsterObsevers, 1));
             }
             else
             {
@@ -129,13 +132,13 @@ public class BingoManager : SingleTone<BingoManager>, IPointerClickHandler, I_Ob
                                 switch (o)
                                 {
                                     case 0:
-                                        m_ActionDateBase.Attack += 1;
+                                        m_ActionDateBase.Attack++;
                                         break;
                                     case 1:
                                         m_ActionDateBase.Defense++;
                                         break;
                                     case 2:
-                                        m_ActionDateBase.Special += 1;
+                                        m_ActionDateBase.Special++;
                                         break;
                                 }
                             }
@@ -143,13 +146,12 @@ public class BingoManager : SingleTone<BingoManager>, IPointerClickHandler, I_Ob
                     }
 
                 }
-                if (m_ActionDateBase.Attack >= 2) { UI.Instance.SkillName("공격업"); Player.Instance.ChangeAttackPowerUp(1); }
-                else if (m_ActionDateBase.Defense >= 2) { UI.Instance.SkillName("방어력"); Player.Instance.ChangeDeefense(1); }
-                else if (m_ActionDateBase.Special >= 2) { UI.Instance.SkillName("공격&방어"); Player.Instance.ChangeDeefense(1); Player.Instance.ChangeAttackPowerUp(1); }
-                yield return new WaitForSeconds(0.5f);
+                if (m_ActionDateBase.Attack >= 2) { yield return UI.Instance.SkillNameOff("공격업"); Player.Instance.ChangeAttackPowerUp(1); Debug.Log("전투"); }
+                else if (m_ActionDateBase.Defense >= 2) { yield return UI.Instance.SkillNameOff("방어력"); Player.Instance.ChangeDeefense(1); Debug.Log("지원"); }
+                else if (m_ActionDateBase.Special >= 2) { yield return UI.Instance.SkillNameOff("공격&방어"); Player.Instance.ChangeDeefense(1); Player.Instance.ChangeAttackPowerUp(1); Debug.Log("스페셜"); }
+                
                 m_ActionDateBase.Attack = 0; m_ActionDateBase.Defense = 0; m_ActionDateBase.Special = 0;
             }
-
         }
 
     }
