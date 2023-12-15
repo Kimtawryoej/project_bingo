@@ -6824,7 +6824,7 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: ab937231d0600440fb0d8757568d78d7, type: 2}
     - target: {fileID: 6672652905693120024, guid: f68bbc435c6f0ca42aaa4328eb8ccd66, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8873256268306076002, guid: f68bbc435c6f0ca42aaa4328eb8ccd66, type: 3}
       propertyPath: m_Name
@@ -6894,7 +6894,7 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.47}
+  m_Offset: {x: 0, y: 0.5}
   m_Size: {x: 0.5, y: 1}
   m_Direction: 0
 --- !u!50 &1647190858
@@ -8024,7 +8024,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2321356293270939694, guid: f615de91763e263429b3d481c31cfad0, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4034317151380232128, guid: f615de91763e263429b3d481c31cfad0, type: 3}
       propertyPath: m_Pivot.x

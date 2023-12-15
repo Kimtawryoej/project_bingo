@@ -40,7 +40,6 @@ public class UI : SingleTone<UI>, I_ObseverManager
     private void Update()
     {
         UI.Instance.StatesText();
-
     }
 
     private void clickGather()

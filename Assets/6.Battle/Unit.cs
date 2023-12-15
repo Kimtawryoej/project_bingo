@@ -54,7 +54,7 @@ public abstract class Unit : MonoBehaviour
         //rigid = GetComponent<Rigidbody2D>();
     }
 
-    protected virtual void Start()
+    protected virtual void OnEnable()
     {
         ReSetStat();
     }

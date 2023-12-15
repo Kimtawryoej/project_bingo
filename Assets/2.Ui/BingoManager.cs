@@ -4,10 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
+using UnityEditor;
 
-public class BingoManager : SingleTone<BingoManager>, IPointerClickHandler
+public class BingoManager : SingleTone<BingoManager>, IPointerClickHandler, I_ObseverManager
 {
     enum Bingo { Attack, Defense = 0, Special = 0 }
+    public List<I_Obsever> MonsterObsevers = new List<I_Obsever>();
     [SerializeField] private ActionDateBase m_ActionDateBase;
     /*public Image[] slot = new Image[9];*/ //이거 private로 바꾸고 해야함 배열 프로퍼티 찾아보삼
     public Image[,] Slot = new Image[3, 3];
@@ -72,7 +74,10 @@ public class BingoManager : SingleTone<BingoManager>, IPointerClickHandler
             OneSaveItem.Clear();
             yield return wait;
             if (monster.gameObject.activeSelf)
-                yield return monster.Attack();
+            {
+                Debug.Log(monster.gameObject);
+                yield return monster.Attack(()=> NotifyObserver<int>(MonsterObsevers, 1));
+            }
             else
             {
                 MonsterManager.Instance.NextMonster();
@@ -121,7 +126,6 @@ public class BingoManager : SingleTone<BingoManager>, IPointerClickHandler
                         {
                             if (Slot[f, l].sprite == GameSystem.Instance.ItemDateBase.Items[o, t])
                             {
-                                Debug.Log(f + "," + l + ",o:" + o + ",t:" + t);
                                 switch (o)
                                 {
                                     case 0:
@@ -144,11 +148,28 @@ public class BingoManager : SingleTone<BingoManager>, IPointerClickHandler
                 else if (m_ActionDateBase.Special >= 2) { UI.Instance.SkillName("공격&방어"); Player.Instance.ChangeDeefense(1); Player.Instance.ChangeAttackPowerUp(1); }
                 yield return new WaitForSeconds(0.5f);
                 m_ActionDateBase.Attack = 0; m_ActionDateBase.Defense = 0; m_ActionDateBase.Special = 0;
-                Debug.Log("빙고 초기화");
             }
 
         }
 
     }
+
+    #region Obsever
+    public void Add(I_Obsever obsever, int index)
+    {
+        MonsterObsevers.Add(obsever);
+    }
+    public void Delete(I_Obsever obsever, int index)
+    {
+        MonsterObsevers.Remove(obsever);
+    }
+    public void NotifyObserver<T>(List<I_Obsever> obsevers, T value)
+    {
+        foreach (I_Obsever obsever in obsevers)
+        {
+            obsever.Refresh<int>(Convert.ToInt32(value));
+        }
+    }
+    #endregion
 }
 

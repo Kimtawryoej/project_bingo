@@ -3,25 +3,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Monster : Unit, I_Obsever, I_ObseverManager, Hitcheck
+public class Monster : Unit, I_Obsever, Hitcheck
 {
     [SerializeField] private ActionDateBase m_ActionDateBase;
-    public List<I_Obsever> MonsterObsevers = new List<I_Obsever>();
     public static Monster Instance;
+    override protected void OnEnable()
+    {
+        ReSetStat();
+        StartCoroutine(HiEffect());
+        hitcheck = false;
+    }
     override protected void Awake()
     {
         Instance = this;
         animator = GetComponent<Animator>();
         m_ActionDateBase.Add(this, 1);
-        StartCoroutine(HiEffect());
+
     }
 
-    public IEnumerator Attack()
+    public IEnumerator Attack(Action play)
     {
         for (int i = 0; i < UnityEngine.Random.Range(1, 4); i++)
         {
             Anim.SetBool("Attack", true);
-            NotifyObserver<int>(MonsterObsevers, UnitStat.AttackPower);
+            play();
             yield return AniStop("2_Attack_Bow", "Attack");
         }
         GameSystem.Instance.Condition.Repeat.Battle = false;
@@ -44,20 +49,6 @@ public class Monster : Unit, I_Obsever, I_ObseverManager, Hitcheck
         ChangeHp(-Convert.ToInt32(value));
     }
 
-    public void Add(I_Obsever obsever, int index)
-    {
-        MonsterObsevers.Add(obsever);
-    }
-    public void Delete(I_Obsever obsever, int index)
-    {
-        MonsterObsevers.Remove(obsever);
-    }
-    public void NotifyObserver<T>(List<I_Obsever> obsevers, T value)
-    {
-        foreach (I_Obsever obsever in obsevers)
-        {
-            obsever.Refresh<int>(Convert.ToInt32(value));
-        }
-    }
+
     #endregion
 }
