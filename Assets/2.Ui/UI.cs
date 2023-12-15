@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.UI;
-using UnityEditor;
 using Unity.VisualScripting;
 using UnityEngine.EventSystems;
-using UnityEditor.Experimental.GraphView;
 
 public class UI : SingleTone<UI>, I_ObseverManager
 {
