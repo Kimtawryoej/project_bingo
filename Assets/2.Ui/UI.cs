@@ -16,7 +16,6 @@ public class UI : SingleTone<UI>, I_ObseverManager
     private List<I_Obsever> endbuttonObsevers = new List<I_Obsever>();
     private List<I_Obsever> startbuttonObsevers = new List<I_Obsever>();
     Dictionary<int, List<I_Obsever>> ObseverSet;
-    
 
 
     public override void Awake()
@@ -33,6 +32,7 @@ public class UI : SingleTone<UI>, I_ObseverManager
     {
         clickGather();
         skillNameBack.gameObject.SetActive(false);
+        StartCoroutine(SkillNameOff());
         StatesText();
     }
 
@@ -47,13 +47,20 @@ public class UI : SingleTone<UI>, I_ObseverManager
         turnStrBtn.onClick.AddListener(() => NotifyObserver(startbuttonObsevers, GameSystem.Instance.Condition.Repeat.TurnSt));
     }
 
-    public IEnumerator SkillNameOff(string skill)
+    public void SkillName(string skill)
     {
         skillNameBack.gameObject.SetActive(true);
         skillNameText.text = skill;
+    }
+
+    IEnumerator SkillNameOff()
+    {
         skillNameBack.gameObject.TryGetComponent(out Animator ani);
-        yield return new WaitUntil(() => ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
-        skillNameBack.gameObject.SetActive(false);
+        while (true)
+        {
+            yield return new WaitUntil(() => ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
+            skillNameBack.gameObject.SetActive(false);
+        }
     }
 
     public void StatesText()
