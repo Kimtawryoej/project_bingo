@@ -42,6 +42,7 @@ public class BingoManager : SingleTone<BingoManager>, IPointerClickHandler, I_Ob
         {
             foreach (var item in Slot)
             {
+                StartCoroutine(clickColor(item));
                 if (item.gameObject == clickObject)
                 {
                     item.sprite = CurrentItem;
@@ -76,7 +77,7 @@ public class BingoManager : SingleTone<BingoManager>, IPointerClickHandler, I_Ob
             if (monster.gameObject.activeSelf)
             {
                 Debug.Log(monster.gameObject);
-                yield return monster.Attack(()=> NotifyObserver<int>(MonsterObsevers, 1));
+                yield return monster.Attack(() => NotifyObserver<int>(MonsterObsevers, 1));
             }
             else
             {
@@ -171,5 +172,13 @@ public class BingoManager : SingleTone<BingoManager>, IPointerClickHandler, I_Ob
         }
     }
     #endregion
+
+    //**Timer
+    public IEnumerator clickColor(Image slot)
+    {
+        slot.color = Color.black;
+        yield return new WaitForSeconds(0.2f);
+        slot.color = Color.white;
+    }
 }
 

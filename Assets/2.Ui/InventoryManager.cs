@@ -13,7 +13,7 @@ public class InventoryManager : MonoBehaviour, IPointerClickHandler
     [SerializeField] private Text skilltextImageText;
     [SerializeField] private string[] skilltext = new string[12];
     public GameObject clickedObject;
-    
+
     private void Start()
     {
         for (int i = 0; i < 3; i++)
@@ -31,6 +31,7 @@ public class InventoryManager : MonoBehaviour, IPointerClickHandler
             if (inventory[i].gameObject == eventData.pointerCurrentRaycast.gameObject)
             {
                 skilltextImageText.text = skilltext[i];
+                StartCoroutine(BingoManager.Instance.clickColor(inventory[i]));
                 foreach (Image item2 in RandomChoice.Instance.Slot)
                 {
                     if (inventory[i].sprite.Equals(item2.sprite))
@@ -44,4 +45,6 @@ public class InventoryManager : MonoBehaviour, IPointerClickHandler
             }
         }
     }
+
+   
 }

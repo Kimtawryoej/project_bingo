@@ -25,18 +25,18 @@ public class ActionDateBase : ScriptableObject, I_ObseverManager
     public void ActionReset()
     {
         //20 / 100 * Player.Instance.UnitStat.MaxHp디펜스 실수 값 넣어야함
-        attackSkill1 = () => { Player.Instance.Anim.SetBool("Attack", true); NotifyObserver<int>(PlayerObsevers, Player.Instance.UnitStat.AttackPower + Player.Instance.UnitStat.AttackPowerUp); UI.Instance.SkillName("오브젝트 어택"); };
-        attackSkill2 = () => { Player.Instance.Anim.SetBool("Attack", true); NotifyObserver<int>(PlayerObsevers, Player.Instance.UnitStat.AttackPower + 1); UI.Instance.SkillName("클래스 어택"); };
-        attackSkill3 = () => { Player.Instance.Anim.SetBool("Attack", true); NotifyObserver<int>(PlayerObsevers, Player.Instance.UnitStat.MaxHp); UI.Instance.SkillName("인스턴스"); };
-        attackSkill4 = () => { Player.Instance.Anim.SetBool("Attack", true); NotifyObserver<int>(PlayerObsevers, Player.Instance.UnitStat.AttackPower + 3); UI.Instance.SkillName("선형탐색 어택"); };
-        defenseSkill1 = () => { Player.Instance.ChangeDeefense(1); UI.Instance.SkillName("알고리즘 방어"); ; };
-        defenseSkill2 = () => { Player.Instance.ChangeDeefense(2); UI.Instance.SkillName("콜라이더 방어"); ; };
-        defenseSkill3 = () => { Player.Instance.ChangeDeefense(3); UI.Instance.SkillName("메쉬콜라이더 방어"); ; };
-        defenseSkill4 = () => { Player.Instance.ChangeDeefense(4); UI.Instance.SkillName("폴리곤콜라이더 방어"); ; };
-        specialSkill1 = () => { Player.Instance.ChangeAttackPowerUp(1); UI.Instance.SkillName("게임엔진기초"); ; };
-        specialSkill2 = () => { Player.Instance.ChangeHp(1); UI.Instance.SkillName("게임프로그래밍"); };
-        specialSkill3 = () => { Player.Instance.ChangeDeefense(8); UI.Instance.SkillName("자료구조"); };
-        specialSkill4 = () => { Player.Instance.ChangeAttackPowerUp(1); Player.Instance.ChangeHp(1); UI.Instance.SkillName("응프"); };
+        attackSkill1 = () => { Player.Instance.Anim.SetBool("Attack", true); NotifyObserver<int>(PlayerObsevers, Player.Instance.UnitStat.AttackPower + Player.Instance.UnitStat.AttackPowerUp); UI.Instance.SkillName("일반공격"); };
+        attackSkill2 = () => { Player.Instance.Anim.SetBool("Attack", true); NotifyObserver<int>(PlayerObsevers, Player.Instance.UnitStat.AttackPower + 1); UI.Instance.SkillName("강한공격"); };
+        attackSkill3 = () => { Player.Instance.Anim.SetBool("Attack", true); NotifyObserver<int>(PlayerObsevers, Player.Instance.UnitStat.MaxHp); UI.Instance.SkillName("죽음공격"); };
+        attackSkill4 = () => { Player.Instance.Anim.SetBool("Attack", true); NotifyObserver<int>(PlayerObsevers, Player.Instance.UnitStat.AttackPower + 3); UI.Instance.SkillName("아주강한공격"); };
+        defenseSkill1 = () => { Player.Instance.ChangeDeefense(1); UI.Instance.SkillName("방어"); ; };
+        defenseSkill2 = () => { Player.Instance.ChangeDeefense(2); UI.Instance.SkillName("방방어"); ; };
+        defenseSkill3 = () => { Player.Instance.ChangeDeefense(3); UI.Instance.SkillName("방방방어"); ; };
+        defenseSkill4 = () => { Player.Instance.ChangeDeefense(4); UI.Instance.SkillName("방방방방어"); ; };
+        specialSkill1 = () => { Player.Instance.ChangeAttackPowerUp(1); UI.Instance.SkillName("파워업"); ; };
+        specialSkill2 = () => { Player.Instance.ChangeHp(1); UI.Instance.SkillName("생명력업"); };
+        specialSkill3 = () => { Player.Instance.ChangeDeefense(8); UI.Instance.SkillName("방어력업"); };
+        specialSkill4 = () => { Player.Instance.ChangeAttackPowerUp(1); Player.Instance.ChangeHp(1); UI.Instance.SkillName("종합선물"); };
         Actions = new Dictionary<Sprite, Action>()
         {
             {Item.Items[0, 0],attackSkill1},
